@@ -5,12 +5,45 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ==================== NAVBAR SCROLL ====================
+  // ==================== HUB PREMIUM ====================
+  const hubItems = document.querySelectorAll('.fade-in-item');
   const navbar = document.getElementById('navbar');
+  const btnAcompanhamento = document.getElementById('btn-acompanhamento');
+
+  // Fade-in sequencial na tela inicial
+  hubItems.forEach((item, index) => {
+    setTimeout(() => {
+      item.classList.add('visible');
+    }, 100 + (index * 150));
+  });
+
+  // Scroll suave do Hub para o site
+  if (btnAcompanhamento) {
+    btnAcompanhamento.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector('#hero');
+      if (target) {
+        const offset = 80;
+        const top = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  }
+
+  // Controle de visibilidade da Navbar baseado na rolagem
   let lastScroll = 0;
+  const hubScreen = document.getElementById('hub-premium');
 
   window.addEventListener('scroll', () => {
     const currentScroll = window.scrollY;
+    const hubHeight = hubScreen ? hubScreen.offsetHeight : 0;
+
+    // Mostrar navbar apenas se rolar para baixo do hub
+    if (currentScroll > hubHeight - 100) {
+      navbar.classList.remove('hub-hidden');
+    } else {
+      navbar.classList.add('hub-hidden');
+    }
 
     if (currentScroll > 60) {
       navbar.classList.add('scrolled');
